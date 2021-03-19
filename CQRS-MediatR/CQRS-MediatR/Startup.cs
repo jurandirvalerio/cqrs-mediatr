@@ -1,4 +1,6 @@
-using CQRS_MediatR.Domain.Handlers;
+using System.Reflection;
+using CQRS_MediatR.Domain.Infrastructure.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +22,8 @@ namespace CQRS_MediatR
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-			services.AddTransient<ICreateCustomerHandler, CreateCustomerHandler>();
+			services.AddSingleton<ICustomerRepository, CustomerRepository>();
+			services.AddMediatR(typeof(Startup));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
