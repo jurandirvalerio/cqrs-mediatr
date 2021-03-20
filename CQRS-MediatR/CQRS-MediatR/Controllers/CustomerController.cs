@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CQRS_MediatR.Domain.Customer.Commands;
 using CQRS_MediatR.Domain.Customer.Commands.MediatorPatternExample.Domain.Customer.Command;
+using CQRS_MediatR.Domain.Customer.Dtos;
+using CQRS_MediatR.Domain.Customer.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,15 +44,30 @@ namespace CQRS_MediatR.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAll()
+		[ProducesResponseType(typeof(IEnumerable<CustomerDto>), 200)]
+		[ProducesResponseType(400)]
+		[ProducesResponseType(404)]
+		public async Task<IActionResult> GetAllAsync()
 		{
-			throw new NotImplementedException("Implementar querie");
+			var customerDtoSet = await _mediator.Send(new GetCustomersQuerie());
+			if (customerDtoSet == null) return NotFound();
+			return Ok(customerDtoSet);
 		}
 
 		[HttpGet("{guid}")]
-		public async Task<IActionResult> Get(Guid guid)
+		[ProducesResponseType(typeof(CustomerDto), 200)]
+		[ProducesResponseType(400)]
+		[ProducesResponseType(404)]
+		public async Task<ActionResult<CustomerDto>> GetAsync(Guid guid)
 		{
-			throw new NotImplementedException("Implementar querie");
+			var customerDto = await _mediator.Send(new GetCustomerQuerie(guid));
+			return Return(customerDto);
+		}
+
+		private ActionResult<CustomerDto> Return(CustomerDto customerDto)
+		{
+			if (customerDto == null) return NotFound();
+			return Ok(customerDto);
 		}
 	}
 }

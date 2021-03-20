@@ -10,7 +10,7 @@ namespace CQRS_MediatR.Domain.Infrastructure.Repositories
 		Task Save(CustomerEntity customer);
 		Task Update(Guid guid, CustomerEntity customer);
 		Task Delete(Guid guid);
-		Task<CustomerEntity> GetById(Guid guid);
+		Task<CustomerEntity> GetByGuid(Guid guid);
 		Task<IEnumerable<CustomerEntity>> GetAll();
 	}
 }

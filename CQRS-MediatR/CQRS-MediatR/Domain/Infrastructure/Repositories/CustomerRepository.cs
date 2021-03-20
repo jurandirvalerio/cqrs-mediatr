@@ -36,7 +36,7 @@ namespace CQRS_MediatR.Domain.Infrastructure.Repositories
 			await Task.Run(() => Customers.RemoveAt(Customers.FindIndex(m => m.Guid == guid)));
 		}
 
-		public async Task<CustomerEntity> GetById(Guid guid)
+		public async Task<CustomerEntity> GetByGuid(Guid guid)
 		{
 			var result = Customers.FirstOrDefault(p => p.Guid == guid);
 			return await Task.FromResult(result);

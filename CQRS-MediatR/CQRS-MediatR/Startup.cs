@@ -1,5 +1,4 @@
-using System.Reflection;
-using CQRS_MediatR.Domain.Infrastructure.Repositories;
+using CQRS_MediatR.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +21,7 @@ namespace CQRS_MediatR
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
-			services.AddSingleton<ICustomerRepository, CustomerRepository>();
+			services.RegisterServices();
 			services.AddMediatR(typeof(Startup));
 		}
 

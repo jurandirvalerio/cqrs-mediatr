@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CQRS_MediatR.Domain.Customer.Handlers
 {
-    public class CustomerHandler :
+    public class CustomerCommandHandler :
        IRequestHandler<CreateCustomerCommand, string>,
        IRequestHandler<UpdateCustomerCommand, string>,
        IRequestHandler<DeleteCustomerCommand, string>
@@ -18,7 +18,7 @@ namespace CQRS_MediatR.Domain.Customer.Handlers
         private readonly IMediator _mediator;
         private readonly ICustomerRepository _customerRepository;
 
-        public CustomerHandler(IMediator mediator, ICustomerRepository customerRepository)
+        public CustomerCommandHandler(IMediator mediator, ICustomerRepository customerRepository)
         {
             _mediator = mediator;
             _customerRepository = customerRepository;
@@ -56,7 +56,7 @@ namespace CQRS_MediatR.Domain.Customer.Handlers
 
         public async Task<string> Handle(DeleteCustomerCommand deleteCustomerCommand, CancellationToken cancellationToken)
         {
-            var client = await _customerRepository.GetById(deleteCustomerCommand.Guid);
+            var client = await _customerRepository.GetByGuid(deleteCustomerCommand.Guid);
             await _customerRepository.Delete(deleteCustomerCommand.Guid);
 
             await _mediator.Publish(new CustomerActionNotification
